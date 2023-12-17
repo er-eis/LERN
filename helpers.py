@@ -2,6 +2,7 @@ import logging
 import time
 from datetime import datetime
 
+from fastapi import HTTPException
 from sqlalchemy import select, create_engine
 from sqlalchemy.orm import Session
 
@@ -81,6 +82,10 @@ def _insert_ml_model_command(ml_model_id: int, command_text: str, user_uid: str)
     with Session(engine) as session:
         with session.begin():
             user = session.query(User).filter(User.uid == user_uid).one_or_none()
+            if user is None:
+                msg = f"User {user_uid} not found"
+                logger.info(msg)
+                raise HTTPException(status_code=401, detail=msg)
             command = Command(
                 ml_model_id=ml_model_id,
                 command_text=command_text,
