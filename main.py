@@ -18,6 +18,11 @@ def app_startup():
     threading.Thread(target=_main_execute_loop).start()
 
 
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
+
+
 @app.get("/mlmodels")
 def read_mlmodels():
     ml_models = _get_ml_models()
