@@ -1,2 +1,1 @@
-# LERN
-Load Execute Release Next
+# LERN: Load Execute Release Next
