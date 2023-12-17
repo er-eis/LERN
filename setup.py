@@ -19,9 +19,5 @@ setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.11",
-    entry_points={
-        "console_scripts": [
-            "your_script=main",
-        ],
-    },
+    entry_points={},
 )
