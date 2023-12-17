@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="LERN",
-    version="0.1.0",
+    version="0.1.2",
     author="er-eis",
     author_email="eeisenberg0@gmail.com",
     description="A short description of your project",
