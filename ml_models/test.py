@@ -1,6 +1,7 @@
-from models.mlmodel import MLModel, Encoding
+from models.db.mlmodel import MLModel, Encoding
 
 
 class Test(MLModel):
-    def execute(self, command_text: str) -> tuple[bytes, Encoding.UTF_8]:
-        return f"Executed {self.command}".encode(Encoding.UTF_8), Encoding.UTF_8
+    @staticmethod
+    def execute(command_text: str) -> tuple[bytes, Encoding.UTF_8]:
+        return f"Executed {command_text}".encode(Encoding.UTF_8.value), Encoding.UTF_8

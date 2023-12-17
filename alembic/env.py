@@ -4,11 +4,11 @@ from alembic import context
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
-from models import command, location, mlmodel, user
+from models.db import command, mlmodel, user
 
-tables_in_use = [command, location, mlmodel, user]
+tables_in_use = [command, mlmodel, user]
 
-from models.base import Base
+from models.db.base import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

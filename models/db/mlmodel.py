@@ -1,14 +1,13 @@
-import enum
 from abc import abstractmethod
+from enum import Enum
 
 from sqlalchemy import TEXT, Column, BOOLEAN
 from sqlalchemy.orm import relationship
 
-from models.base import CommonColumns
+from models.db.base import CommonColumns
 
 
-@enum.StrEnum
-class Encoding:
+class Encoding(Enum):
     UTF_8 = "utf-8"
 
 
@@ -18,10 +17,11 @@ class MLModel(CommonColumns):
     name = Column(TEXT, nullable=False)
     location = Column(TEXT, nullable=False)
     admin_only = Column(BOOLEAN, nullable=False, default=True, server_default="True")
-    command = relationship("Command", back_populates="mlmodel")
+    commands = relationship("Command", back_populates="ml_model")
 
+    @staticmethod
     @abstractmethod
-    def execute(self, command_text: str) -> tuple[bytes, Encoding]:
+    def execute(command_text: str) -> tuple[bytes, Encoding]:
         pass
 
     def __repr__(self):
