@@ -11,6 +11,7 @@ from ml_models.registry import ML_MODELS
 from models.db.base import Base
 from models.db.command import Command
 from models.db.mlmodel import MLModel
+from models.db.result import Result
 from models.db.user import User
 
 logger = logging.getLogger(__name__)
@@ -59,11 +60,20 @@ def _main_execute_loop():
                 for command_row in commands_to_execute:
                     with session.begin():
                         command = command_row[0]
-                        result = ml_model.execute(command_text=command.command_text)
+                        output, encoding = ml_model.execute(
+                            command_text=command.command_text
+                        )
                         command.executed_at = datetime.now()
                         session.add(command)
                         logger.info(
-                            f"Executed command {command.id} for user {command.user_id}, result: {result}"
+                            f"Executed command {command.id} for user {command.user_id}, output: {output[:15]}...{output[-15:]}"
+                        )
+                        session.add(
+                            Result(
+                                command_id=command.id,
+                                output=output,
+                                encoding=encoding,
+                            )
                         )
 
         if waits % 60 == 0:

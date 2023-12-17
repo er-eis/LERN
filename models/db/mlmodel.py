@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 from models.db.base import CommonColumns
 
 
-class Encoding(Enum):
+class MLEncodingEnum(Enum):
     UTF_8 = "utf-8"
 
 
@@ -21,7 +21,7 @@ class MLModel(CommonColumns):
 
     @staticmethod
     @abstractmethod
-    def execute(command_text: str) -> tuple[bytes, Encoding]:
+    def execute(command_text: str) -> tuple[bytes, MLEncodingEnum]:
         pass
 
     def __repr__(self):

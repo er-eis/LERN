@@ -4,9 +4,9 @@ from alembic import context
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
-from models.db import command, mlmodel, user
+from models.db import command, mlmodel, user, result
 
-tables_in_use = [command, mlmodel, user]
+tables_in_use = [command, mlmodel, user, result]
 
 from models.db.base import Base
 
