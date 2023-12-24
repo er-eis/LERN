@@ -2,6 +2,7 @@ import logging
 import time
 from datetime import datetime
 
+import torch.cuda
 from fastapi import HTTPException
 from sqlalchemy import select, create_engine
 from sqlalchemy.orm import Session
@@ -28,6 +29,7 @@ EXECUTE_ML_MODELS = True
 
 def _main_ml_model_execute_loop():
     waits = 0
+    last_model_executed = None
     while True:
         if EXECUTE_ML_MODELS:
             while True:
@@ -70,11 +72,17 @@ def _main_ml_model_execute_loop():
                         ml_model_class = ML_MODELS[
                             oldest_command_not_executed.ml_model_id
                         ]
-                        ml_model = ml_model_class(**ml_model_config.__dict__)
+                        if last_model_executed.__class__ != ml_model_class:
+                            logger.info(
+                                f"Executing commands for {ml_model_class.__name__}"
+                            )
+                            del last_model_executed
+                            torch.cuda.empty_cache()
+                            last_model_executed = ml_model_class(**ml_model_config.__dict__)
                     for command_row in commands_to_execute:
                         with session.begin():
                             command = command_row[0]
-                            output, encoding = ml_model.execute(
+                            output, encoding = last_model_executed.execute(
                                 command_text=command.command_text
                             )
                             command.executed_at = datetime.now()
@@ -89,11 +97,13 @@ def _main_ml_model_execute_loop():
                                     encoding=encoding,
                                 )
                             )
-
             if waits % 60 == 0:
                 logger.info(f"No commands to execute. Waiting...")
             waits += 1
             time.sleep(3)
+        else:
+            del last_model_executed
+            torch.cuda.empty_cache()
 
 
 def _get_ml_models():

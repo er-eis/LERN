@@ -9,6 +9,7 @@ from models.db.base import CommonColumns
 
 class MLEncodingEnum(Enum):
     UTF_8 = "utf-8"
+    BASE_64 = "base64"
 
 
 class MLModel(CommonColumns):

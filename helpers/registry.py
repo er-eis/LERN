@@ -1,8 +1,7 @@
-from ml_models.flash_llama import FlashLLAMA
-from ml_models.test import Test
+from ml_models.llama import LLAMA
+from ml_models.texttoimage import TextToImage
 
 ML_MODELS = {
-    1: Test,
-    2: FlashLLAMA,
-    3: FlashLLAMA,
+    1: LLAMA,
+    2: TextToImage,
 }
