@@ -19,9 +19,12 @@ class MLModel(CommonColumns):
     admin_only = Column(BOOLEAN, nullable=False, default=True, server_default="True")
     commands = relationship("Command", back_populates="ml_model")
 
-    @staticmethod
     @abstractmethod
-    def execute(command_text: str) -> tuple[bytes, MLEncodingEnum]:
+    def __init__(self, location: str, *args, **kwargs):
+        pass
+
+    @abstractmethod
+    def execute(self, command_text: str) -> tuple[bytes, MLEncodingEnum]:
         pass
 
     def __repr__(self):

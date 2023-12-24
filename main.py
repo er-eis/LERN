@@ -3,7 +3,7 @@ import threading
 
 from fastapi import FastAPI
 
-from helpers import (
+from helpers.functions import (
     _main_ml_model_execute_loop,
     _get_ml_models,
     _insert_ml_model_command,

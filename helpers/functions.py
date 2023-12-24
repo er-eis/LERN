@@ -7,7 +7,7 @@ from sqlalchemy import select, create_engine
 from sqlalchemy.orm import Session
 
 import environment
-from ml_models.registry import ML_MODELS
+from helpers.registry import ML_MODELS
 from models.db.base import Base
 from models.db.command import Command
 from models.db.mlmodel import MLModel
@@ -60,7 +60,17 @@ def _main_ml_model_execute_loop():
                             statement_all_commands_of_oldest_type
                         ).all()
 
-                        ml_model = ML_MODELS[oldest_command_not_executed.ml_model_id]
+                        ml_model_config = (
+                            session.query(MLModel)
+                            .where(
+                                MLModel.id == oldest_command_not_executed.ml_model_id
+                            )
+                            .one()
+                        )
+                        ml_model_class = ML_MODELS[
+                            oldest_command_not_executed.ml_model_id
+                        ]
+                        ml_model = ml_model_class(**ml_model_config.__dict__)
                     for command_row in commands_to_execute:
                         with session.begin():
                             command = command_row[0]
