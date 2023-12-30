@@ -14,6 +14,8 @@ class Command(CommonColumns):
     user = relationship("User", back_populates="commands")
     executed_at = Column(DateTime(timezone=True), nullable=True, default=None)
     result = relationship("Result", back_populates="command")
+    channel_id = Column(TEXT, nullable=True, default=None)
+    message_id = Column(TEXT, nullable=True, default=None)
 
     def __repr__(self):
         return f"<Command {self.id} (user={self.user_id}, ml_model={self.ml_model_id}, command_text='{self.command_text[:15]}'...)>"

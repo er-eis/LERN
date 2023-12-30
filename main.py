@@ -40,6 +40,8 @@ def execute_command(command: PostExecuteCommand):
         ml_model_id=command.ml_model_id,
         command_text=command.command_text,
         user_uid=command.uid,
+        channel_id=command.channel_id,
+        message_id=command.message_id,
     )
     return queued_command_result
 

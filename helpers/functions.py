@@ -112,7 +112,7 @@ def _get_ml_models():
     return ml_models
 
 
-def _insert_ml_model_command(ml_model_id: int, command_text: str, user_uid: str):
+def _insert_ml_model_command(ml_model_id: int, command_text: str, user_uid: str, channel_id: str = None, message_id: str = None):
     with Session(engine) as session:
         with session.begin():
             user = session.query(User).filter(User.uid == user_uid).one_or_none()
@@ -124,6 +124,8 @@ def _insert_ml_model_command(ml_model_id: int, command_text: str, user_uid: str)
                 ml_model_id=ml_model_id,
                 command_text=command_text,
                 user_id=user.id,
+                channel_id=channel_id,
+                message_id=message_id,
             )
             session.add(command)
         result_str = f"Queued {command} for {user_uid}"
